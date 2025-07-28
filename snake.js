@@ -1,43 +1,36 @@
+const board = document.getElementById('score');
 const canvas = document.getElementById('field');
 const ctx = canvas.getContext('2d');
 
 // Grid size
 const box = 20;
-const rows = canvas.width;
-const cols = canvas.height;
+const frog = new Image();
+frog.src = './images/frog.png';
+
+const snakeHead = new Image();
+snakeHead.src = './images/snake-head.png';
+
+const snakeBody = new Image();
+snakeBody.src = './images/snake-body.png';
 
 // Snake and food positions
 let snake = [{x: 9 * box, y: 9 * box}];
 let food = spawnFood();
 let dircetion = null;
-let sorce = 0;
-
-function resizeCanvas() {
-    const canvas = document.getElementById('field');
-    
-    const width = document.innerWidth < 500 ? 360 : 400;
-    const height = document.innerHeight < 500 ? 360 : 400;
-
-    canvas.width = width;
-    canvas.height = height;
-
-    console.log(canvas.width, canvas.height, window.innerWidth);
-    
-}
-
-window.addEventListener('resize', resizeCanvas);
-resizeCanvas();
+let score = 0;
 
 function drawGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     for (let i = 0; i < snake.length; i++) {
-        ctx.fillStyle = i === 0 ? 'green' : 'darkgreen';
-        ctx.fillRect(snake[i].x, snake[i].y,box, box);
+        // ctx.fillStyle = i === 0 ? 'green' : 'darkgreen';
+        // ctx.fillRect(snake[i].x, snake[i].y,box, box);
+        ctx.drawImage(i ===0 ? snakeHead : snakeBody, snake[i].x, snake[i].y, box, box);
     }
 
-    ctx.fillStyle = "red";
-    ctx.fillRect(food.x, food.y, box, box);
+    ctx.drawImage(frog, food.x, food.y, box, box);
+    // ctx.fillStyle = "red";
+    // ctx.fillRect(food.x, food.y, box, box);
 }
 
 function updateSnake() {
@@ -51,15 +44,15 @@ function updateSnake() {
     // Eat food
     if (head.x === food.x && head.y === food.y) {
         food = spawnFood(); // change position of food
-        sorce++;
+        board.textContent = "Score: "+ (++score);
     }else {
         snake.pop(); // un set shifting if not ate
     }
 
     // Game over (Wall or self)
     if (
-        head.x < 0 || head.x >= rows || 
-        head.y < 0 || head.y >= cols || 
+        head.x < 0 || head.x >= canvas.width || 
+        head.y < 0 || head.y >= canvas.height || 
         isCollision(head, snake)
     ) {
         clearInterval(game);
@@ -90,7 +83,7 @@ function gameLoop() {
 }
 
 // start game
-const game = setInterval(gameLoop, 150);
+const game = setInterval(gameLoop, 180);
 
 function spawnFood() {
     return {
