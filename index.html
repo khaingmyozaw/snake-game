@@ -4,21 +4,29 @@
 <head>
     <meta charset="UTF-8" />
     <title>Snake Game</title>
-    <style>
-        body {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-        canvas {
-            border: 2px solid black;
-            background: #e0ffe0;
-        }
-    </style>
+    <link rel="stylesheet" href="./style.css">
 </head>
 
 <body>
-    <canvas id="field" width="400" height="400"></canvas>
+    <div class="container">
+        <div class="wrap">
+            <canvas id="field" width="400" height="400"></canvas>
+            <p id="sorce">Sorce: </p>
+        </div>
+
+        <div class="row">
+            <div class="d-flex">
+                <button id="upBtn" onclick="changeDirection('ArrowUp')"></button>
+            </div>
+            <div class="d-flex">
+                <button id="leftBtn" onclick="changeDirection('ArrowLeft')"></button>
+                <button id="rightBtn" onclick="changeDirection('ArrowRight')"></button>
+            </div>
+            <div class="d-flex">
+                <button id="downBtn" onclick="changeDirection('ArrowDown')"></button>
+            </div>
+        </div>
+    </div>
 
     <script src="snake.js"></script>
 </body>

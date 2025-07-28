@@ -1,0 +1,87 @@
+* {
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0;
+}
+
+.container {
+    box-sizing: border-box;
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.wrap {
+    min-width: 368px;
+    max-width: 408px;
+    min-height: 368px;
+    max-height: 408px;
+    width: max-content;
+    height: max-content;
+    border: 4px solid blue;
+    background: url(./images/background.jpeg) center / cover no-repeat;
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+canvas {
+    background: #00000030;
+}
+p#sorce {
+    padding: .8rem;
+    margin: .2rem;
+    border-radius: 4px;
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #ffffff50;
+}
+
+.row {
+    width: 100%;
+    padding: 0rem 0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.d-flex {
+    width: 100%;
+    padding: .7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5rem;
+}
+
+button {
+    width: 6rem;
+    height: 4rem;
+    padding: 1.5rem;
+    opacity: .9;
+    cursor: pointer;
+
+    background: url(./images/arrow.png) center / contain no-repeat;
+    background-color: darkgreen;
+    box-shadow: inset 2px 2px 4px 2px #ffffff80;
+}
+button:hover {
+    opacity: 1;
+}
+
+button#leftBtn {
+    rotate: 270deg;
+}
+button#rightBtn {
+    rotate: 90deg;
+}
+button#downBtn {
+    rotate: 180deg;
+}

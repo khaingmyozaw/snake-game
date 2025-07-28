@@ -3,12 +3,30 @@ const ctx = canvas.getContext('2d');
 
 // Grid size
 const box = 20;
+const rows = canvas.width;
+const cols = canvas.height;
 
 // Snake and food positions
 let snake = [{x: 9 * box, y: 9 * box}];
 let food = spawnFood();
 let dircetion = null;
 let sorce = 0;
+
+function resizeCanvas() {
+    const canvas = document.getElementById('field');
+    
+    const width = document.innerWidth < 500 ? 360 : 400;
+    const height = document.innerHeight < 500 ? 360 : 400;
+
+    canvas.width = width;
+    canvas.height = height;
+
+    console.log(canvas.width, canvas.height, window.innerWidth);
+    
+}
+
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
 
 function drawGame() {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -25,10 +43,10 @@ function drawGame() {
 function updateSnake() {
     const head = {...snake[0]}
     
-    if (dircetion === 'LEFT' && dircetion !== 'RIGHT') head.x -= box;
-    else if (dircetion === 'RIGHT' && dircetion !== 'LEFT') head.x += box;
-    else if (dircetion === 'UP' && dircetion !== 'DOWN') head.y -= box;
-    else if (dircetion === 'DOWN' && dircetion !== 'UP') head.y += box;
+    if (dircetion === 'LEFT') head.x -= box;
+    else if (dircetion === 'RIGHT') head.x += box;
+    else if (dircetion === 'UP') head.y -= box;
+    else if (dircetion === 'DOWN') head.y += box;
 
     // Eat food
     if (head.x === food.x && head.y === food.y) {
@@ -40,8 +58,8 @@ function updateSnake() {
 
     // Game over (Wall or self)
     if (
-        head.x < 0 || head.x >= canvas.width || 
-        head.y < 0 || head.y >= canvas.height || 
+        head.x < 0 || head.x >= rows || 
+        head.y < 0 || head.y >= cols || 
         isCollision(head, snake)
     ) {
         clearInterval(game);
@@ -58,14 +76,13 @@ function isCollision(head, array) {
 
 document.addEventListener('keydown', changeDirection);
 function changeDirection(event) {
-    const key = event.key;
+    const key = event.key ?? event;
 
-    if (key === 'ArrowLeft') dircetion = 'LEFT';
-    else if (key === 'ArrowUp') dircetion = 'UP';
-    else if (key === 'ArrowRight') dircetion = 'RIGHT';
-    else if (key === 'ArrowDown') dircetion = 'DOWN';
+    if (key === 'ArrowLeft' && dircetion !== 'RIGHT') dircetion = 'LEFT';
+    else if (key === 'ArrowUp' && dircetion !== 'DOWN') dircetion = 'UP';
+    else if (key === 'ArrowRight' && dircetion !== 'LEFT') dircetion = 'RIGHT';
+    else if (key === 'ArrowDown' && dircetion !== 'UP') dircetion = 'DOWN';
 }
-
 
 function gameLoop() {
     updateSnake();
