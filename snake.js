@@ -1,5 +1,7 @@
 const board = document.getElementById('score');
 const canvas = document.getElementById('field');
+const gameover = document.getElementById('gameover');
+const restartBtn = document.getElementById('restart-btn');
 const ctx = canvas.getContext('2d');
 
 // Grid size
@@ -12,9 +14,10 @@ snakeHead.src = './images/snake-head.png';
 
 const snakeBody = new Image();
 snakeBody.src = './images/snake-body.png';
+let game;
 
 // Snake and food positions
-let snake = [{x: 9 * box, y: 9 * box}];
+let snake = [{ x: 9 * box, y: 9 * box }];
 let food = spawnFood();
 let dircetion = null;
 let score = 0;
@@ -25,7 +28,7 @@ function drawGame() {
     for (let i = 0; i < snake.length; i++) {
         // ctx.fillStyle = i === 0 ? 'green' : 'darkgreen';
         // ctx.fillRect(snake[i].x, snake[i].y,box, box);
-        ctx.drawImage(i ===0 ? snakeHead : snakeBody, snake[i].x, snake[i].y, box, box);
+        ctx.drawImage(i === 0 ? snakeHead : snakeBody, snake[i].x, snake[i].y, box, box);
     }
 
     ctx.drawImage(frog, food.x, food.y, box, box);
@@ -34,8 +37,8 @@ function drawGame() {
 }
 
 function updateSnake() {
-    const head = {...snake[0]}
-    
+    const head = { ...snake[0] }
+
     if (dircetion === 'LEFT') head.x -= box;
     else if (dircetion === 'RIGHT') head.x += box;
     else if (dircetion === 'UP') head.y -= box;
@@ -44,20 +47,19 @@ function updateSnake() {
     // Eat food
     if (head.x === food.x && head.y === food.y) {
         food = spawnFood(); // change position of food
-        board.textContent = "Score: "+ (++score);
-    }else {
+        board.textContent = "Score: " + (++score);
+    } else {
         snake.pop(); // un set shifting if not ate
     }
 
     // Game over (Wall or self)
     if (
-        head.x < 0 || head.x >= canvas.width || 
-        head.y < 0 || head.y >= canvas.height || 
+        head.x < 0 || head.x >= canvas.width ||
+        head.y < 0 || head.y >= canvas.height ||
         isCollision(head, snake)
     ) {
         clearInterval(game);
-        // location.reload();
-        alert('Game Over');
+        gameover.style.display = 'flex';
     }
 
     snake.unshift(head);
@@ -83,11 +85,35 @@ function gameLoop() {
 }
 
 // start game
-const game = setInterval(gameLoop, 180);
+game = setInterval(gameLoop, 180);
 
 function spawnFood() {
-    return {
-        x: Math.floor(Math.random() * (canvas.width / box)) * box,
-        y: Math.floor(Math.random() * (canvas.height / box)) * box,
-    };
+    let newFrog;
+
+    // Avoid frog is overlapping snake's body
+    do {
+        newFrog = {
+            x: Math.floor(Math.random() * (canvas.width / box)) * box,
+            y: Math.floor(Math.random() * (canvas.height / box)) * box,
+        };
+    }while (snake.some(segment => segment.x === newFrog.x && segment.y === newFrog.y));
+
+    return newFrog;
+}
+
+function resetGameState() {
+    snake = [{x: 9 * box, y: 9 * box}];
+    dircetion = null;
+    score = 0;
+    food = spawnFood();
+}
+
+restartBtn.addEventListener('click', restartGame);
+function restartGame() {
+    resetGameState();
+    gameover.style.display = 'none';
+
+    // Restart game loop
+    clearInterval(game);
+    game = setInterval(gameLoop, 180);
 }
