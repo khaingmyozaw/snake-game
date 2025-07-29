@@ -2,6 +2,9 @@ const board = document.getElementById('score');
 const canvas = document.getElementById('field');
 const gameover = document.getElementById('gameover');
 const restartBtn = document.getElementById('restart-btn');
+const starterPage = document.getElementById('starter-page');
+const backBtn = document.getElementById('back-btn');
+
 const ctx = canvas.getContext('2d');
 
 // Grid size
@@ -15,6 +18,7 @@ snakeHead.src = './images/snake-head.png';
 const snakeBody = new Image();
 snakeBody.src = './images/snake-body.png';
 let game;
+let speed;
 
 // Snake and food positions
 let snake = [{ x: 9 * box, y: 9 * box }];
@@ -84,9 +88,6 @@ function gameLoop() {
     drawGame();
 }
 
-// start game
-game = setInterval(gameLoop, 180);
-
 function spawnFood() {
     let newFrog;
 
@@ -99,6 +100,15 @@ function spawnFood() {
     }while (snake.some(segment => segment.x === newFrog.x && segment.y === newFrog.y));
 
     return newFrog;
+}
+
+// start game
+function startGame(modeSpeed = 180) {
+    speed = modeSpeed;
+    starterPage.style.display = 'none';
+
+    clearInterval(game);
+    game = setInterval(gameLoop, modeSpeed);
 }
 
 function resetGameState() {
@@ -115,5 +125,14 @@ function restartGame() {
 
     // Restart game loop
     clearInterval(game);
-    game = setInterval(gameLoop, 180);
+    game = setInterval(gameLoop, speed);
+}
+
+backBtn.addEventListener('click', back);
+function back() {
+    clearInterval(game);
+    resetGameState();
+    speed = 0;
+    starterPage.style.display = 'flex';
+    gameover.style.display = 'none';
 }

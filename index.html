@@ -12,27 +12,44 @@
         <div class="wrap">
             <canvas id="field" width="400" height="400"></canvas>
             <p id="score">Score: </p>
+            <div id="starter-page">
+                <button class="mode" id="easy" onclick="startGame(200)">
+                    Easy
+                </button>
+                <button class="mode" id="medium" onclick="startGame(120)">
+                    Medium
+                </button>
+                <button class="mode" id="hard" onclick="startGame(80)">
+                    Hard
+                </button>
+            </div>
         </div>
 
         <div class="row">
             <div class="d-flex">
-                <button id="upBtn" onclick="changeDirection('ArrowUp')"></button>
+                <button class="controller" id="upBtn" onclick="changeDirection('ArrowUp')"></button>
             </div>
             <div class="d-flex">
-                <button id="leftBtn" onclick="changeDirection('ArrowLeft')"></button>
-                <button id="rightBtn" onclick="changeDirection('ArrowRight')"></button>
+                <button class="controller" id="leftBtn" onclick="changeDirection('ArrowLeft')"></button>
+                <button class="controller" id="rightBtn" onclick="changeDirection('ArrowRight')"></button>
             </div>
             <div class="d-flex">
-                <button id="downBtn" onclick="changeDirection('ArrowDown')"></button>
+                <button class="controller" id="downBtn" onclick="changeDirection('ArrowDown')"></button>
             </div>
         </div>
 
         <div id="gameover">
             <div class="wrap">
                 <img src="./images/gameover.png" alt="game over">
-                <button id="restart-btn">
-                    <img src="./images/restart.png" alt="restart">
-                </button>
+
+                <div class="row">
+                    <button id="back-btn">
+                        <img src="./images/back.png" alt="restart">
+                    </button>
+                    <button id="restart-btn">
+                        <img src="./images/restart.png" alt="restart">
+                    </button>
+                </div>
             </div>
         </div>
     </div>
